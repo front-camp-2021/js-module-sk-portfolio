@@ -1,8 +1,7 @@
-export const cutStrings = (arr = [], strLength = 0) => {
-  if(strLength <= 0) {
-    const lengthArr = arr.map(str => str.length)
-    strLength = Math.min(...lengthArr)
-  }
-  return arr.map(str => str.substring(0, strLength))
+export const cutStrings = (arr = []) => {
+  const lengthArr = arr.map(str => str.length)
+  const minLength = Math.min(...lengthArr)
+  return arr.map(str => str.substring(0, minLength))
 }
-cutStrings(["adfg", "bkfkdl", "cdfffk", "dgldssvv"], 4)
+cutStrings(["adfg", "bkfkdl", "cdfffk", "dgldssvv"]);
+cutStrings(["addf", "ba", "cqqw", "drrrr"]);

@@ -6,16 +6,20 @@
 <body>
 
 <script type="module">
-  const debounce = (fn, delay = 0) => {
+  function debounce(fn, delay = 0) {
     let isCooldown = false;
-
-    return function() {
+    return function () {
       if (isCooldown) return;
+      fn.apply(this, arguments);
       isCooldown = true;
       setTimeout(() => isCooldown = false, delay);
-      return fn.apply(this, arguments);
     };
+
   }
+  const f = debounce(alert, 1000);
+  f(1);
+  f(2);
+  setTimeout( () => f(3), 100);
 
   const obj = {
     nickname: 'John',
@@ -36,6 +40,8 @@
   console.log(debounceGetName.call(obj));
   console.log(debounceGetName.call(obj));
   console.log(debounceGetName.call(obj));
+
+
 </script>
 </body>
 </html>
