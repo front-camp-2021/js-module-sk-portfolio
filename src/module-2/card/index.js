@@ -20,20 +20,10 @@ export default class Card {
 
     this.render();
   }
-
-  render() {
-    const [productImgSrc1, ...productImages] = this.images
-    const product = document.createElement('article');
-    product.classList.add('product-card')
-    if(this.rating >= 0 && typeof this.rating !== "string"){
-      product.classList.add('product-card--with-rating')
-    } else {
-      console.error('invalid rating value')
-    }
-    product.innerHTML = `
-  <div class="product-card__main">
+  getTemplate() {
+    return ` <div class="product-card__main">
     <div class="product-card__img">
-      <img src="${productImgSrc1}" alt="product">
+      <img src="${this.images[0]}" alt="product">
     </div>
     <div class="product-card__info">
       <div class="product-card__wr">
@@ -67,7 +57,23 @@ export default class Card {
         <span>ADD TO CART</span>
     </button>
   </div>`
-    return product
+  }
+  render() {
+    const product = document.createElement('article');
+    product.classList.add('product-card')
+    const rating = Number(this.rating)
+    isNaN(rating) ? console.error('invalid rating value') : product.classList.add('product-card--with-rating')
+    product.innerHTML = this.getTemplate()
+    this.element = product;
+  }
+  remove(){
+    if(this.element){
+      this.element.remove()
+    }
+  }
+  destroy(){
+    this.remove()
+    this.element = null
   }
 }
 
