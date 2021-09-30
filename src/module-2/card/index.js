@@ -20,6 +20,7 @@ export default class Card {
 
     this.render();
   }
+
   getTemplate() {
     return ` <div class="product-card__main">
     <div class="product-card__img">
@@ -58,22 +59,27 @@ export default class Card {
     </button>
   </div>`
   }
+
   render() {
     const product = document.createElement('article');
     product.classList.add('product-card')
     const rating = Number(this.rating)
     isNaN(rating) ? console.error('invalid rating value') : product.classList.add('product-card--with-rating')
     product.innerHTML = this.getTemplate()
+
     this.element = product;
   }
-  remove(){
-    if(this.element){
+
+  remove() {
+    if (this.element) {
       this.element.remove()
     }
   }
-  destroy(){
+
+  destroy() {
     this.remove()
     this.element = null
   }
+
 }
 

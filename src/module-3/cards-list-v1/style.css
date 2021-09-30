@@ -8,7 +8,7 @@ h1,h2,h3,h4,h5,h6,p{
 body{
   font-family: 'Montserrat', sans-serif;
 }
-#root{
+.card-list{
   display: grid;
   grid-template-columns: repeat(3,1fr);
   max-width: 1288px;

@@ -5,3 +5,4 @@ export const cutStrings = (arr = []) => {
 }
 cutStrings(["adfg", "bkfkdl", "cdfffk", "dgldssvv"]);
 cutStrings(["addf", "ba", "cqqw", "drrrr"]);
+

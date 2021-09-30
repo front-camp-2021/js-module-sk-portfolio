@@ -1,3 +1,4 @@
+
 export const weirdString = (str = "") => {
   if(str === '') return str
   const strUppercase = str.toUpperCase()
