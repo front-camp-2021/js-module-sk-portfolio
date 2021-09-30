@@ -63,8 +63,10 @@ export default class Card {
   render() {
     const product = document.createElement('article');
     product.classList.add('product-card')
-    const rating = Number(this.rating)
-    isNaN(rating) ? console.error('invalid rating value') : product.classList.add('product-card--with-rating')
+
+    if(this.rating !== null) {
+      isNaN(Number(this.rating)) ? console.error('invalid rating value') : product.classList.add('product-card--with-rating')
+    }
     product.innerHTML = this.getTemplate()
 
     this.element = product;
