@@ -6,11 +6,14 @@ export default class CardsList {
     this.Component = Component;
     // ... your logic
     this.render()
+    this.getSubElements()
     this.update(this.data)
   }
 
   get template() {
-    return `<div class="card-list" data-element="list"></div>`
+    return `<div>
+                <div class="card-list" data-element="body"></div>
+            </div>`
   }
 
   render() {
@@ -18,7 +21,16 @@ export default class CardsList {
     wrapper.innerHTML = this.template
     this.element = wrapper.firstElementChild
   }
+  getSubElements(){
+    const result = {}
+    const elements = this.element.querySelectorAll('[data-element]')
 
+    for(const subElement of elements){
+      const name = subElement.dataset.element
+      result[name] = subElement
+    }
+    this.subElements = result
+  }
   remove() {
     if (this.element) {
       this.element.remove()
@@ -32,12 +44,19 @@ export default class CardsList {
 
   update(data = []) {
     this.data = data
-    const updateCards = data.map(item =>{
+
+    const cards = data.map(item => {
       return new this.Component(item).element
     })
-    if(updateCards.length) {
-      this.element.append(...updateCards)
+    if(cards.length) {
+        this.subElements.body.replaceChildren(...cards)
     }
+    // const updateCards = data.map(item =>{
+    //   return new this.Component(item).element
+    // })
+    // if(updateCards.length) {
+    //   this.element.firstElementChild.append(...updateCards)
+    // }
   }
 
 }

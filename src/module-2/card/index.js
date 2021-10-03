@@ -23,6 +23,7 @@ export default class Card {
 
   getTemplate() {
     return ` <div class="product-card__main">
+
     <div class="product-card__img">
       <img src="${this.images[0]}" alt="product">
     </div>
@@ -31,6 +32,12 @@ export default class Card {
         <div class="product-card__rating">
                               <span>
                                   ${this.rating}
+                              </span>
+                              <span>
+                               ${this.category}
+                              </span>
+                              <span>
+                              ${this.brand}
                               </span>
           <img src="img/icons/star.svg" alt="rating-star">
         </div>
@@ -64,7 +71,7 @@ export default class Card {
     const product = document.createElement('article');
     product.classList.add('product-card')
 
-    if(this.rating !== null) {
+    if (this.rating !== null) {
       isNaN(Number(this.rating)) ? console.error('invalid rating value') : product.classList.add('product-card--with-rating')
     }
     product.innerHTML = this.getTemplate()
