@@ -1,6 +1,5 @@
 export default class FiltersList {
-  element
-  subElements = {}
+
 
   constructor({
                 title = '',
@@ -12,6 +11,8 @@ export default class FiltersList {
     this.render()
     this.getSubElements()
     this.getFilterItems()
+    this.update()
+    // this.getFilterItems()
     // ... your logic
   }
 
@@ -25,11 +26,6 @@ export default class FiltersList {
             </div>`
   }
 
-  render() {
-    const wrapper = document.createElement('div')
-    wrapper.innerHTML = this.template
-    this.element = wrapper
-  }
 
   remove() {
     if (this.element) {
@@ -42,11 +38,32 @@ export default class FiltersList {
     this.element = null;
   }
 
+  getFilterItems() {
+    const items = this.list.map(item => `<label class="field field--checkbox sidebar__field">
+              <input type="checkbox" ${item.checked === true ? `checked` : ''}>
+                   <span class="field__checkbox-substitute">
+
+                 </span>
+                  <span class="field__info">
+                  <span class="field__name">
+                     ${item.title}
+                 </span>
+              </span>
+            </label>`)
+
+    return items.join('')
+  }
+
+  render() {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = this.template
+    this.element = wrapper
+
+  }
 
   getSubElements() {
     const result = {}
     const elements = this.element.querySelectorAll('[data-element]')
-
     for (const subElement of elements) {
       const name = subElement.dataset.element
       result[name] = subElement
@@ -56,24 +73,37 @@ export default class FiltersList {
 
   reset() {
     this.list.map(item => delete (item.checked))
-    this.getFilterItems()
+    this.update()
   }
 
-  getFilterItems() {
+  update() {
     const itemsWrapper = document.createElement('div')
-    const items = this.list.map(item => `<label class="field field--checkbox sidebar__field">
-                <input type="checkbox" ${item.checked === true ? `checked` : ''}>
-                    <span class="field__checkbox-substitute">
-
-                    </span>
-                    <span class="field__info">
-                    <span class="field__name">
-                        ${item.title}
-                    </span>
-                </span>
-              </label>`)
-    itemsWrapper.innerHTML = items.join('')
+    itemsWrapper.innerHTML = this.getFilterItems()
     this.subElements.body.replaceChildren(...itemsWrapper.children)
-    return items
   }
+
+
 }
+
+// reset() {
+//   this.list.map(item => delete (item.checked))
+//   this.getFilterItems()
+// }
+
+// getFilterItems() {
+//   const itemsWrapper = document.createElement('div')
+//   const items = this.list.map(item => `<label class="field field--checkbox sidebar__field">
+//               <input type="checkbox" ${item.checked === true ? `checked` : ''}>
+//                   <span class="field__checkbox-substitute">
+//
+//                   </span>
+//                   <span class="field__info">
+//                   <span class="field__name">
+//                       ${item.title}
+//                   </span>
+//               </span>
+//             </label>`)
+//   itemsWrapper.innerHTML = items.join('')
+//   this.subElements.body.replaceChildren(...itemsWrapper.children)
+//   return items
+// }
