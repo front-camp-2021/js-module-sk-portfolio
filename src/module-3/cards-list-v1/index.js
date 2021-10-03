@@ -51,12 +51,6 @@ export default class CardsList {
     if(cards.length) {
         this.subElements.body.replaceChildren(...cards)
     }
-    // const updateCards = data.map(item =>{
-    //   return new this.Component(item).element
-    // })
-    // if(updateCards.length) {
-    //   this.element.firstElementChild.append(...updateCards)
-    // }
   }
 
 }
