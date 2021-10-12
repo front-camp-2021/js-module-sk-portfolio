@@ -15,9 +15,9 @@
 
   <script type="module">
     import SideBar from './index.js';
-    import { categoryFilterConfig, brandFilterConfig } from './config.js';
+    import { categoryFilterConfig, brandFilterConfig, priceRatingSliderConfig, rangeRatingSliderConfig } from './config.js';
 
-    const sideBar = new SideBar(categoryFilterConfig, brandFilterConfig);
+    const sideBar = new SideBar(categoryFilterConfig, brandFilterConfig ,priceRatingSliderConfig, rangeRatingSliderConfig );
 
     root.append(sideBar.element);
 
