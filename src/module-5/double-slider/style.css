@@ -31,15 +31,18 @@
 .range-slider__thumb-left {
   left: 0;
   margin-left: -6px;
+  z-index: 100;
 }
 
 .range-slider__thumb-right {
   right: 0;
   transform: rotate(180deg);
   margin-right: -6px;
+  z-index: 100;
 }
 
 .range-slider__progress {
+  display: block;
   background: #109cf1;
   position: absolute;
   top: 0;
