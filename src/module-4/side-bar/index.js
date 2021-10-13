@@ -62,7 +62,7 @@ export default class SideBar {
               Filters
             </h3>
             <button class="btn btn--only-img btn--white-bg">
-              <img src="img/icons/arrows-left.svg" alt="close">
+              <img src="../../module-5/pagination/img/icons/arrows-left.svg" alt="close">
             </button>
           </div>
           <div class="sidebar__range-sliders" data-element="slidersWrapper">
