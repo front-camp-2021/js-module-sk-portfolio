@@ -50,9 +50,13 @@ export default class Pagination {
   }
 
   render() {
-    const wrapper = document.createElement('div')
-    wrapper.innerHTML = this.template
-    this.element = wrapper.firstElementChild
+    if(!this.totalPages) {
+      console.error('No pagination')
+    } else {
+      const wrapper = document.createElement('div')
+      wrapper.innerHTML = this.template
+      this.element = wrapper.firstElementChild
+    }
   }
 
   update() {
@@ -133,12 +137,20 @@ export default class Pagination {
     this.element.addEventListener('click', this.goToNextPage, true)
     this.element.addEventListener('click', this.goToPrevPage, true)
   }
-
+  removeEventListeners(){
+    this.element.removeEventListener('click', this.setCurrentOnClick, true)
+    this.element.removeEventListener('click', this.goToNextPage, true)
+    this.element.removeEventListener('click', this.goToPrevPage, true)
+  }
   remove() {
-    // ... your logic
+    if (this.element) {
+      this.element.remove();
+      this.removeEventListeners();
+    }
   }
 
   destroy() {
-    // ... your logic
+      this.remove();
+      this.element = null;
   }
 }
