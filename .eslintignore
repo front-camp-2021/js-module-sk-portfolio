@@ -1,3 +1,3 @@
 /dist
 *.example.js
-src/**/index.js
+src/**/debounce.js

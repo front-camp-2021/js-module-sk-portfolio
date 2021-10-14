@@ -28,13 +28,13 @@ export default class Pagination {
   get template() {
     return `<nav class="products-list__pagination pagination" data-element="wrapper">
         <button class="pagination__btn pagination__btn--left" data-element="prev">
-          <img src="./img/icons/arrow-left.svg" alt="prev">
+          <img src="../../module-6/search/img/icons/arrow-left.svg" alt="prev">
         </button>
         <ul class="pagination__list"  data-element="list">
 
         </ul>
         <button class="pagination__btn pagination__btn--right"  data-element="next">
-          <img src="./img/icons/arrow-left.svg" alt="next">
+          <img src="../../module-6/search/img/icons/arrow-left.svg" alt="next">
         </button>
       </nav>`
   }

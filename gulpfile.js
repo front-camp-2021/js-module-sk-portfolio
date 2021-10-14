@@ -4,7 +4,7 @@ const rename = require('gulp-rename');
 const babel = require('gulp-babel');
 
 gulp.task('uglify', done => {
-  gulp.src('src/**/solution/index.js')
+  gulp.src('src/**/solution/debounce.js')
     .pipe(babel({
       presets: [
         ['@babel/preset-env', {

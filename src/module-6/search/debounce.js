@@ -1,4 +1,4 @@
-export const index = (fn, delay = 0) => {
+export const debounce = (fn, delay = 0) => {
     let isCooldown = false;
 
     return function() {
