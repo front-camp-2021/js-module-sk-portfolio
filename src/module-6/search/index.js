@@ -35,20 +35,21 @@ export default class Search {
   dispatchEvent() {
     this.element.addEventListener('input', debounce(e => {
         const inputValue = e.target.value
-
         this.element.dispatchEvent(
           new CustomEvent('search-filter', {
             detail: inputValue
           }))
-      }, 500)
+      }, 400)
     )
   }
-  remove(){
-    if(this.element){
+
+  remove() {
+    if (this.element) {
       this.element.remove()
     }
   }
-  destroy(){
+
+  destroy() {
     this.remove()
     this.element = null
   }

@@ -33,11 +33,7 @@ export default class Card {
                               <span>
                                   ${this.rating}
                               </span>
-                              <span>
-                               ${this.category}
-                              </span>
-                              <span>
-                              ${this.brand}
+
                               </span>
           <img src="img/icons/star.svg" alt="rating-star">
         </div>
@@ -51,6 +47,11 @@ export default class Card {
         </h3>
         <p>
           Redesigned from scratch and completely revised.
+               <span>
+                               ${this.category}
+                              </span>
+                              <span>
+                              ${this.brand}
         </p>
       </div>
     </div>

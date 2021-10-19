@@ -12,7 +12,7 @@ export default class CardsList {
 
   get template() {
     return `<div>
-                <div class="card-list" data-element="body"></div>
+                <div class="products__inner" data-element="body"></div>
             </div>`
   }
 
@@ -21,16 +21,18 @@ export default class CardsList {
     wrapper.innerHTML = this.template
     this.element = wrapper.firstElementChild
   }
-  getSubElements(){
+
+  getSubElements() {
     const result = {}
     const elements = this.element.querySelectorAll('[data-element]')
 
-    for(const subElement of elements){
+    for (const subElement of elements) {
       const name = subElement.dataset.element
       result[name] = subElement
     }
     this.subElements = result
   }
+
   remove() {
     if (this.element) {
       this.element.remove()
@@ -48,9 +50,8 @@ export default class CardsList {
     const cards = data.map(item => {
       return new this.Component(item).element
     })
-    if(cards.length) {
-        this.subElements.body.replaceChildren(...cards)
-    }
+    this.subElements.body.replaceChildren(...cards)
+
   }
 
 }

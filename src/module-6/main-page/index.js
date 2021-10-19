@@ -1,11 +1,4 @@
-import Pagination from '../../module-5/pagination/index.js';
-import SideBar from '../../module-4/side-bar/index.js';
-import CardsList from '../../module-3/cards-list-v1/index.js';
-import Search from '../search/index.js';
-import { request } from './request/index.js';
-import { prepareFilters } from './prepare-filters/index.js';
-
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3000';
+// const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3000';
 
 export default class Page {
   element;
@@ -18,21 +11,49 @@ export default class Page {
   constructor() {
     this.filters.set('_page', '1');
     this.filters.set('_limit', this.pageLimit);
-
+    this.render()
+    this.getSubElements()
     // ... your logic
   }
 
   get template () {
-    // ... your logic
+    return `
+  <section class="products-list">
+    <div class="container ">
+      <div class="products-list__inner" data-element="mainWrapper">
+        <div class="products products-list__main">
+          <div class="products__search-res">
+            <p>
+              7,618 results found
+            </p>
+            <button class="btn btn--only-img btn--violet">
+              <img src="img/icons/white-heart.svg" alt="heart">
+            </button>
+          </div>
+      </div>
+    </div>
+  </section>`
+  }
+
+  getSubElements(){
+    const result = {}
+    const elements = this.element.querySelectorAll('[data-element]')
+
+    for (const subElement of elements) {
+      const name = subElement.dataset.element
+      result[name] = subElement
+    }
+    this.subElements = result
   }
 
   render() {
     const wrapper = document.createElement('div');
 
     wrapper.innerHTML = this.template;
-
     this.element = wrapper.firstElementChild;
   }
+
+
 
   remove () {
     // ... your logic

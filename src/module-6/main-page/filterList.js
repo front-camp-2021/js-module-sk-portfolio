@@ -12,6 +12,8 @@ export default class FiltersList {
     this.getSubElements()
     this.getFilterItems()
     this.update()
+    this.onChange()
+
     // this.getFilterItems()
     // ... your logic
   }
@@ -40,7 +42,7 @@ export default class FiltersList {
 
   getFilterItems() {
     const items = this.list.map(item => `<label class="field field--checkbox sidebar__field" data-element="field">
-              <input type="checkbox" ${item.checked === true ? `checked` : ''}>
+              <input type="checkbox" ${item.checked === true ? `checked` : ''} value="${item.value}">
                    <span class="field__checkbox-substitute">
 
                  </span>
@@ -59,6 +61,18 @@ export default class FiltersList {
     wrapper.innerHTML = this.template
     this.element = wrapper
 
+  }
+
+  onChange(){
+    const addFilter =  new CustomEvent('add-filter', {bubbles: true});
+    const removeFilter = new CustomEvent('remove-filter');
+    this.element.addEventListener('change', event => {
+      if (event.target.checked) {
+        this.element.dispatchEvent(addFilter);
+      } else {
+        this.element.dispatchEvent(removeFilter);
+      }
+    })
   }
 
   getSubElements() {
