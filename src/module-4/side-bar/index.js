@@ -130,7 +130,6 @@ export default class SideBar {
   }
 
   clearFiltersClick = e => {
-    console.log(e)
     if (e.target.className === this.subElements.button.className) {
       this.clearFilters()
 
