@@ -63,7 +63,6 @@ export default class Pagination {
     this.addEventListeners()
     this.items = this.getPaginationItems(newTotal)
     this.subElements.list.replaceChildren(...this.setCurrentPage())
-    console.log(this.subElements.list)
     if (this.element) {
       this.element.dispatchEvent(new CustomEvent('page-changed', {
         detail: {

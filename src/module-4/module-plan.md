@@ -1,6 +1,6 @@
 # Plan for module #4
-<<<<<<< HEAD
-=======
+
+
 
 ## Check homework
 
@@ -21,4 +21,4 @@
 
 * "FiltersList" component with events
 * "SideBar" component
->>>>>>> upstream/master
+

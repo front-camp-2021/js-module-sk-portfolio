@@ -1,6 +1,6 @@
 # Plan for module #3
-<<<<<<< HEAD
-=======
+
+
 
 ## Check homework
 
@@ -25,4 +25,4 @@ Part 2
 ## New homework
 
 * "CardList" component
->>>>>>> upstream/master
+
