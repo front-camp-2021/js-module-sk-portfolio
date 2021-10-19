@@ -39,7 +39,6 @@ export default class DoubleSlider {
     return { from, to };
   }
 
-  // Events Handlers
   sliderDownEvent(event) {
     const thumbElem = event.target;
 

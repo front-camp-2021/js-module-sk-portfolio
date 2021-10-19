@@ -5,7 +5,6 @@ export default class Page {
   subElements = {};
   components = {};
   pageLimit = 10;
-  totalPages = 100;
   filters = new URLSearchParams();
 
   constructor() {
@@ -13,10 +12,9 @@ export default class Page {
     this.filters.set('_limit', this.pageLimit);
     this.render()
     this.getSubElements()
-    // ... your logic
   }
 
-  get template () {
+  get template() {
     return `
   <section class="products-list">
     <div class="container ">
@@ -27,7 +25,7 @@ export default class Page {
               7,618 results found
             </p>
             <button class="btn btn--only-img btn--violet">
-              <img src="img/icons/white-heart.svg" alt="heart">
+              <img src="./img/icons/white-heart.svg" alt="heart">
             </button>
           </div>
       </div>
@@ -35,7 +33,7 @@ export default class Page {
   </section>`
   }
 
-  getSubElements(){
+  getSubElements() {
     const result = {}
     const elements = this.element.querySelectorAll('[data-element]')
 
@@ -54,12 +52,14 @@ export default class Page {
   }
 
 
-
-  remove () {
-    // ... your logic
+  remove() {
+    if (this.element) {
+      this.element.remove();
+    }
   }
 
-  destroy () {
-    // ... your logic
+  destroy() {
+    this.remove();
+    this.element = null;
   }
 }
