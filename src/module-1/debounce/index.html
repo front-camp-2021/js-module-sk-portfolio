@@ -6,7 +6,21 @@
 <body>
 
 <script type="module">
-  import { debounce } from './solution';
+
+  function debounce(fn, delay = 0) {
+    let isCooldown = false;
+    return function () {
+      if (isCooldown) return;
+      fn.apply(this, arguments);
+      isCooldown = true;
+      setTimeout(() => isCooldown = false, delay);
+    };
+
+  }
+  const f = debounce(alert, 1000);
+  f(1);
+  f(2);
+  setTimeout( () => f(3), 100);
 
   const obj = {
     nickname: 'John',
@@ -15,21 +29,20 @@
     }
   }
 
-  const debounceLog = debounce((a, b) => {
-    return a + b;
-  }, 1000);
-
-  const debounceGetName = debounce(obj.getName);
+  let debounceLog = debounce((a, b) => a + b , 300);
+  const debounceGetName = debounce(obj.getName,3000);
 
   // Note: should log "1" only one time
-  console.error(debounceLog(1, 2));
-  console.error(debounceLog(1, 3));
-  console.error(debounceLog(1, 4));
+  console.log(debounceLog(1, 2))
+  console.log(debounceLog(1, 3))
+  console.log(debounceLog(1, 4))
 
   // Note: should log "John" only one time
-  console.error(debounceGetName.call(obj));
-  console.error(debounceGetName.call(obj));
-  console.error(debounceGetName.call(obj));
+  console.log(debounceGetName.call(obj));
+  console.log(debounceGetName.call(obj));
+  console.log(debounceGetName.call(obj));
+
+
 </script>
 </body>
 </html>

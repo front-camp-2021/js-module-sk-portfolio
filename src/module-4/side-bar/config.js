@@ -35,3 +35,13 @@ export const brandFilterConfig = [
     title: 'Apple',
   }
 ];
+export const priceRatingSliderConfig = {
+    min: 0,
+    max: 85000,
+}
+
+export const rangeRatingSliderConfig = {
+    min: 0,
+    max: 5,
+    precision: 2,
+  }

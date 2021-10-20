@@ -2,33 +2,176 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
-  <link rel="stylesheet" href="../../module-5/double-slider/style.css">
+  <link rel="stylesheet" href="style.css">
 
-  <!-- Environment configuration -->
   <script>
     window.process = {
       env: {
-        BACKEND_URL: '',
-        // ... other env variables
+        BACKEND_URL: 'http://localhost:3000',
       }
     }
+
   </script>
 
 </head>
 
 <body>
-  <div id="root"></div>
 
-  <script type="module">
-    import Page from './index.js';
+<div id="root"></div>
 
-    const page = new Page();
+<script type="module">
 
-    root.append(page.element);
-  </script>
+
+  import Page from './components';
+  import Search from "../search/index.js";
+  import SideBar from "./components/sidebar.js";
+  import Card from '../../module-2/card/index.js';
+  import Pagination from "./components/pagination.js";
+  import CardsList from '../../module-3/cards-list-v1/index.js';
+  import {debounce} from "../search/debounce.js";
+  import getFilteredResponse from './components/filteredResponse.js'
+  import {prepareFilters} from  './prepare-filters/index.js'
+
+
+  const PRODUCT_NOT_FOUND = 'these products are not available'
+  const BACKEND_URL = 'http://localhost:3000'
+  const BACKEND_URL_PRODUCTS = new URL('products', BACKEND_URL)
+  const BACKEND_URL_CATEGORIES = new URL('categories', BACKEND_URL)
+  const BACKEND_URL_BRANDS = new URL('brands', BACKEND_URL)
+
+
+
+  let productsResponse = await fetch(BACKEND_URL_PRODUCTS)
+  let products = await productsResponse.json()
+  let categoryResponse = await fetch(BACKEND_URL_CATEGORIES)
+  let categories = await categoryResponse.json()
+  let brandsResponse = await fetch(BACKEND_URL_BRANDS)
+  let brands = await brandsResponse.json()
+
+  const prepareCategories = prepareFilters(categories,'category')
+  const prepareBrands = prepareFilters(brands,'brand')
+
+  let filteredProductForPagination = products
+  const productsOnOnePage = 9
+  const totalPages = Math.ceil(products.length / productsOnOnePage)
+
+
+  const page = new Page();
+
+  const pagination = new Pagination({
+    totalPages: totalPages,
+    page:1
+  })
+
+  const cardList = new CardsList({
+    data: products.slice(0, productsOnOnePage),
+    Component: Card
+  })
+
+  const sidebar = new SideBar(
+    prepareCategories,
+    prepareBrands,
+    {
+      min: 0,
+      max: 85000,
+    },
+    {
+      min: 0,
+      max: 5,
+      precision: 2,
+    }
+  )
+
+  const search = new Search()
+
+  const sidebarElement = sidebar.element.firstElementChild
+  root.append(page.element);
+  page.subElements.mainWrapper.prepend(sidebar.element.firstElementChild)
+  const productsWrapper = page.element.querySelector('.products')
+  productsWrapper.prepend(search.element)
+  productsWrapper.append(cardList.element.firstElementChild)
+  productsWrapper.append(pagination.element)
+
+  const resultOutput = document.querySelector('.products__search-res p')
+  resultOutput.innerHTML = `${products.length} results found`
+
+  pagination.element.addEventListener('click', e => {
+    currentProductsPagination(filteredProductForPagination)
+  })
+
+  sidebarElement.addEventListener('click', e => {
+    if(e.target.closest('.field--checkbox')){
+      const inputs = sidebar.subElements.form.querySelectorAll('input')
+      const activeFiltersValues = Array.from(inputs).filter(item => item.checked)
+      const filteredResponse = getFilteredResponse(activeFiltersValues, products)
+
+      if (activeFiltersValues.length === 0) {
+        cardList.update(products)
+      } else if (filteredResponse.length === 0) {
+        cardList.update()
+        pagination.update(0)
+        resultOutput.innerHTML = `${PRODUCT_NOT_FOUND}`
+      } else {
+        resultOutput.innerHTML = `${filteredResponse.length} results found`
+        filteredProductForPagination = filteredResponse
+        currentProductsPagination(filteredProductForPagination)
+      }
+    }
+  })
+
+  sidebar.subElements.slidersWrapper.addEventListener('pointerup', debounce(e => {
+    const sliders = document.querySelectorAll('.range-slider')
+    const sliderMinPrice = +sliders[0].querySelector('[data-element="from"]').innerHTML
+    const sliderMaxPrice = +sliders[0].querySelector('[data-element="to"]').innerHTML
+    const sliderMinRating = +sliders[1].querySelector('[data-element="from"]').innerHTML
+    const sliderMaxRating = +sliders[1].querySelector('[data-element="to"]').innerHTML
+    const productsFromPriceRange = products.filter(product => product.price >= sliderMinPrice && product.price <= sliderMaxPrice)
+    const productsFromRatingRange = productsFromPriceRange.filter(product => product.rating >= sliderMinRating && product.rating <= sliderMaxRating)
+
+    if(productsFromRatingRange.length === 0){
+      resultOutput.innerHTML = `${PRODUCT_NOT_FOUND}`
+      pagination.update(0)
+      cardList.update()
+    } else{
+      resultOutput.innerHTML = `${productsFromRatingRange.length} results found`
+      filteredProductForPagination = productsFromRatingRange
+      filteredProductForPagination.length === 0 ? resultOutput.innerHTML = `${PRODUCT_NOT_FOUND}` : resultOutput.innerHTML = `${filteredProductForPagination.length} results found`
+      currentProductsPagination(filteredProductForPagination)
+    }
+  }), 400)
+  sidebar.subElements.button.addEventListener('click', e => {
+    sidebar.clearFiltersClick(e)
+    filteredProductForPagination = products
+    currentProductsPagination(filteredProductForPagination)
+  })
+  search.element.addEventListener('search-filter', async e => {
+    BACKEND_URL_PRODUCTS.searchParams.set('q', e.detail)
+    const searchResponse = await fetch(BACKEND_URL_PRODUCTS, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    filteredProductForPagination = await searchResponse.json()
+    filteredProductForPagination.length === 0 ? resultOutput.innerHTML = `${PRODUCT_NOT_FOUND}` : resultOutput.innerHTML = `${filteredProductForPagination.length} results found`
+    currentProductsPagination(filteredProductForPagination)
+
+  })
+
+  function currentProductsPagination(data) {
+    const productCopy = [...data]
+    const numberOfPages = productCopy.length / productsOnOnePage
+    pagination.update(Math.ceil(numberOfPages))
+    const intermediateLength = productsOnOnePage * (pagination.pageIndex + 1)
+    const currentPageProducts = productCopy.slice(intermediateLength - productsOnOnePage, intermediateLength)
+    cardList.update(currentPageProducts)
+  }
+
+
+</script>
 </body>
 </html>
