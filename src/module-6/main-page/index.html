@@ -50,7 +50,6 @@
   let categories = await categoryResponse.json()
   let brandsResponse = await fetch(BACKEND_URL_BRANDS)
   let brands = await brandsResponse.json()
-
   const prepareCategories = prepareFilters(categories,'category')
   const prepareBrands = prepareFilters(brands,'brand')
 
